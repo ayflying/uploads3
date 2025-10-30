@@ -23,8 +23,11 @@ jobs:
 
       - name: Install gf CLI
         run: |
-          go install github.com/gogf/gf/cmd/gf@latest
-          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+          curl -L -o gf https://github.com/gogf/gf/releases/latest/download/gf_linux_amd64
+          chmod +x gf
+          mkdir -p "$HOME/bin"
+          mv gf "$HOME/bin/gf"
+          echo "$HOME/bin" >> $GITHUB_PATH
 
       - name: Verify gf
         run: gf -v
