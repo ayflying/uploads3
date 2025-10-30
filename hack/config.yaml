@@ -5,10 +5,10 @@ gfcli:
   build:
     name: "uploads3"
     arch: "amd64,arm,arm64"
-    system: "windows,android,linux"
+    system: "windows,linux"
     mod: "none"
     packSrc: "hack,resource,manifest"
-    version: "v1.0.0"
+#    version: "v1.0.0"
     path: "./bin"
     extra: -trimpath -ldflags="-s -w"
     #    cgo: true
