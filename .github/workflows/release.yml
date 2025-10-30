@@ -58,6 +58,31 @@ jobs:
           name: uploads3-${{ github.ref_name }}
           path: bin
 
+      - name: Package artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          # Find all built binaries recursively and package with unique names per platform/arch
+          mapfile -t files < <(find bin -type f \( -name 'uploads3' -o -name 'uploads3.exe' \))
+          for f in "${files[@]}"; do
+            dir="$(dirname "$f")"
+            base="$(basename "$f")"
+            plat_arch="$(basename "$dir")" # expects linux_amd64, windows_amd64, etc.
+            case "$plat_arch" in
+              windows_*)
+                zip_name="uploads3_${{ github.ref_name }}_${plat_arch}.zip"
+                (cd "$dir" && zip -9 "${GITHUB_WORKSPACE}/dist/${zip_name}" "$base")
+                ;;
+              *)
+                tar_name="uploads3_${{ github.ref_name }}_${plat_arch}.tar.gz"
+                (cd "$dir" && tar -czf "${GITHUB_WORKSPACE}/dist/${tar_name}" "$base")
+                ;;
+            esac
+          done
+          # Checksums
+          (cd dist && sha256sum * > SHA256SUMS.txt)
+          ls -al dist
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -67,4 +92,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            bin/**
+            dist/*
