@@ -1,0 +1,10 @@
+s3:
+  type: "default"
+  default:
+    provider: "minio"
+    accessKey: "p6AuTRDWShet6ywGxzsU"
+    secretKey: "YPOHpSTUqFi4oZX44WsWFGvncx8iI4nc3GPzNcBf"
+    address: "ay.cname.com:9000"
+    ssl: false
+    url: "http://ay.cname.com:9000/cdn.yoyaworld.com/"
+    bucketName: "cdn.yoyaworld.com"
